@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-// all the word pairs for one language
 public class LanguageDictionary {
 
     private ArrayList<DictionaryEntry> entries;
@@ -20,6 +19,7 @@ public class LanguageDictionary {
                 return current.getTranslatedWord();
             }
         }
+
         return null;
     }
 
@@ -30,19 +30,16 @@ public class LanguageDictionary {
         while (scan.hasNextLine()) {
             String line = scan.nextLine();
 
-            if (line.length() == 0) {
-                continue;
+            if (line.length() != 0) {
+                int eq = line.indexOf("=");
+
+                if (eq != -1) {
+                    String english = line.substring(0, eq);
+                    String translated = line.substring(eq + 1);
+
+                    entries.add(new DictionaryEntry(english, translated));
+                }
             }
-
-            int eq = line.indexOf("=");
-            if (eq == -1) {
-                continue;
-            }
-
-            String english = line.substring(0, eq);
-            String translated = line.substring(eq + 1);
-
-            entries.add(new DictionaryEntry(english, translated));
         }
 
         scan.close();
