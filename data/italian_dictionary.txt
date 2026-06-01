@@ -18,6 +18,7 @@ my=mio
 your=tuo
 his=suo
 her=suo
+is=e
 good=buono
 bad=cattivo
 big=grande

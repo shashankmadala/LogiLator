@@ -1,0 +1,5 @@
+.env
+bin/
+*.class
+*.jar
+.DS_Store

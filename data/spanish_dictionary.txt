@@ -18,6 +18,7 @@ my=mi
 your=tu
 his=su
 her=su
+is=es
 good=bueno
 bad=malo
 big=grande

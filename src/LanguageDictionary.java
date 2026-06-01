@@ -1,9 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.ArrayList;
 
-// all the word pairs for one language
 public class LanguageDictionary {
 
     private ArrayList<DictionaryEntry> entries;
@@ -12,7 +11,7 @@ public class LanguageDictionary {
         entries = new ArrayList<DictionaryEntry>();
     }
 
-    public String translateWord(String word) {
+    public String translateWord(String word) throws Exception {
         for (int i = 0; i < entries.size(); i++) {
             DictionaryEntry current = entries.get(i);
 
@@ -20,6 +19,9 @@ public class LanguageDictionary {
                 return current.getTranslatedWord();
             }
         }
+
+        java.io.FileWriter writer = new java.io.FileWriter("data/unknown_words.txt", true);
+        writer.write(word + "\n");
         return null;
     }
 
@@ -30,21 +32,16 @@ public class LanguageDictionary {
         while (scan.hasNextLine()) {
             String line = scan.nextLine();
 
-            if (line.length() == 0) {
-                continue;
+            if (line.length() != 0) {
+                int eq = line.indexOf("=");
+
+                if (eq != -1) {
+                    String english = line.substring(0, eq);
+                    String translated = line.substring(eq + 1);
+
+                    entries.add(new DictionaryEntry(english, translated));
+                }
             }
-
-            int eq = line.indexOf("=");
-            if (eq == -1) {
-                continue;
-            }
-
-            String english = line.substring(0, eq);
-            String translated = line.substring(eq + 1);
-
-            entries.add(new DictionaryEntry(english, translated));
         }
-
-        scan.close();
     }
 }
