@@ -19,19 +19,16 @@ public class Translator {
         processor = new PhraseProcessor();
     }
 
-    public TranslationResult translate(String input) {
+    public String translate(String input) throws Exception {
         ArrayList<String> words = processor.breakPhrase(input);
 
         String translated = "";
-        boolean complete = true;
-
         for (int i = 0; i < words.size(); i++) {
             String word = words.get(i);
             String translation = dictionary.translateWord(word);
 
             if (translation == null) {
                 translation = word;
-                complete = false;
             }
 
             if (i == 0) {
@@ -41,7 +38,7 @@ public class Translator {
             }
         }
 
-        return new TranslationResult(input, translated, complete);
+        return translated;
     }
 
     // takes the raw translated phrase and asks Gemini to reorder the words
@@ -70,10 +67,9 @@ public class Translator {
         return getTextFromResponse(readStream(conn.getInputStream())).trim();
     }
 
-    public TranslationResult translateAndMakeSense(String input, String language) throws Exception {
-        TranslationResult raw = translate(input);
-        String better = makeSense(language, raw.getTranslated());
-        return new TranslationResult(raw.getOriginal(), better, raw.isComplete());
+    public String translateAndMakeSense(String input, String language) throws Exception {
+        String raw = translate(input);
+        return makeSense(language, raw);
     }
 
     private String readStream(InputStream stream) throws Exception {
